@@ -18,6 +18,7 @@ interface Sortable
 
     /**
      * @param int $value
+     *
      * @return void
      */
     public function setPosition(int $value): void;

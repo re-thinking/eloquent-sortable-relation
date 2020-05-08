@@ -11,12 +11,12 @@ class SortableTest extends TestCase
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 1
+            'place'    => 1,
         ]);
 
         /** @var DefaultSortableItem $defaultItem */
@@ -38,12 +38,12 @@ class SortableTest extends TestCase
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 1
+            'place'    => 1,
         ]);
 
         $defaultItem = new DefaultSortableItem();
@@ -66,12 +66,12 @@ class SortableTest extends TestCase
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 1
+            'place'    => 1,
         ]);
 
         $defaultItem = new DefaultSortableItem();
@@ -82,7 +82,7 @@ class SortableTest extends TestCase
 
         $owner->defaultSortableItems()->save($defaultItem);
         $owner->customSortableItems()->save($customItem);
-        
+
         $this->assertEquals(3, $defaultItem->getPosition());
         $this->assertEquals(1, $customItem->getPosition());
     }
@@ -93,12 +93,12 @@ class SortableTest extends TestCase
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 1
+            'place'    => 1,
         ]);
 
         $defaultItem = new DefaultSortableItem();
@@ -123,13 +123,13 @@ class SortableTest extends TestCase
         /** @var DefaultSortableItem $defaultItem */
         $defaultItem = DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         /** @var CustomSortableItem $customItem */
         $customItem = CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 1
+            'place'    => 1,
         ]);
 
         $defaultItem->owner()->dissociate();
@@ -141,7 +141,7 @@ class SortableTest extends TestCase
         $this->assertNull($customItem->getPosition());
         $this->assertNull($customItem[$customItem->getPositionColumnName()]);
     }
-    
+
     public function testSetSortingForDifferentContext()
     {
         /** @var Owner $owner1 */
@@ -149,19 +149,19 @@ class SortableTest extends TestCase
 
         DefaultSortableItem::create([
             'owner_id' => $owner1->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         /** @var Owner $owner2 */
         $owner2 = Owner::create();
 
         /** @var DefaultSortableItem $item */
-        $item = $owner1->defaultSortableItems()->save(new DefaultSortableItem);
+        $item = $owner1->defaultSortableItems()->save(new DefaultSortableItem());
         $this->assertEquals(2, $item->getPosition());
         $this->assertEquals(2, $item[$item->getPositionColumnName()]);
 
         /** @var DefaultSortableItem $item */
-        $item = $owner2->defaultSortableItems()->save(new DefaultSortableItem);
+        $item = $owner2->defaultSortableItems()->save(new DefaultSortableItem());
         $this->assertEquals(1, $item->getPosition());
         $this->assertEquals(1, $item[$item->getPositionColumnName()]);
     }
@@ -173,34 +173,34 @@ class SortableTest extends TestCase
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 3
+            'position' => 3,
         ]);
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 2
+            'position' => 2,
         ]);
 
         CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 2
+            'place'    => 2,
         ]);
 
         CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 1
+            'place'    => 1,
         ]);
 
         $this->assertCount(3, $owner->defaultSortableItems()->get());
         $this->assertCount(2, $owner->customSortableItems()->get());
 
-        $this->assertEquals([2,3,1], $owner->defaultSortableItems->pluck('id')->toArray());
-        $this->assertEquals([2,1], $owner->customSortableItems->pluck('id')->toArray());
+        $this->assertEquals([2, 3, 1], $owner->defaultSortableItems->pluck('id')->toArray());
+        $this->assertEquals([2, 1], $owner->customSortableItems->pluck('id')->toArray());
     }
 
     public function testRelationsResort()
@@ -209,11 +209,11 @@ class SortableTest extends TestCase
         $owner = Owner::create();
 
         $owner->defaultSortableItems()->createMany([
-            [], [], []
+            [], [], [],
         ]);
 
         $owner->customSortableItems()->createMany([
-            [], []
+            [], [],
         ]);
 
         $defaultItem = $owner->defaultSortableItems()->get()->offsetGet(1);
@@ -226,8 +226,8 @@ class SortableTest extends TestCase
         $owner->customSortableItems()->resort();
 
         $this->assertCount(2, $owner->defaultSortableItems);
-        $this->assertEquals([1,2], $owner->defaultSortableItems->pluck(DefaultSortableItem::getPositionColumnName())->toArray());
-        $this->assertEquals([1,3], $owner->defaultSortableItems->pluck('id')->toArray());
+        $this->assertEquals([1, 2], $owner->defaultSortableItems->pluck(DefaultSortableItem::getPositionColumnName())->toArray());
+        $this->assertEquals([1, 3], $owner->defaultSortableItems->pluck('id')->toArray());
 
         $this->assertCount(1, $owner->customSortableItems);
         $this->assertEquals([1], $owner->customSortableItems->pluck(CustomSortableItem::getPositionColumnName())->toArray());
@@ -241,27 +241,27 @@ class SortableTest extends TestCase
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 3
+            'position' => 3,
         ]);
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 2
+            'position' => 2,
         ]);
 
         CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 2
+            'place'    => 2,
         ]);
 
         CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 1
+            'place'    => 1,
         ]);
 
         $defaultItems = $owner->defaultSortableItems()->get();
@@ -284,12 +284,12 @@ class SortableTest extends TestCase
 
         DefaultSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         CustomSortableItem::create([
             'owner_id' => $owner->getKey(),
-            'place' => 1
+            'place'    => 1,
         ]);
 
         /** @var DefaultSortableItem $defaultItem */

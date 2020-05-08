@@ -48,7 +48,7 @@ trait HasSortingContext
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setRelation($relation, $value)
     {

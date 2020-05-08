@@ -16,7 +16,7 @@ class HasManySorted extends HasMany
 
     /**
      * @param iterable $ids
-     * @param int $start
+     * @param int      $start
      */
     public function setSortingOrder(iterable $ids, int $start = 1)
     {
@@ -28,7 +28,7 @@ class HasManySorted extends HasMany
     }
 
     /**
-     * Resort existing records within related model
+     * Resort existing records within related model.
      */
     public function resort(): void
     {
