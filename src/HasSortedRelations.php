@@ -11,6 +11,7 @@ trait HasSortedRelations
      * @param $related
      * @param null $foreignKey
      * @param null $localKey
+     *
      * @return HasManySorted
      */
     public function hasManySorted($related, $foreignKey = null, $localKey = null)
@@ -27,7 +28,7 @@ trait HasSortedRelations
         return $this->newHasManySorted(
             $instance->newQuery(),
             $this,
-            $instance->getTable() . '.' . $foreignKey,
+            $instance->getTable().'.'.$foreignKey,
             $localKey
         );
     }
@@ -35,10 +36,11 @@ trait HasSortedRelations
     /**
      * Instantiate a new HasManySorted relationship.
      *
-     * @param  Builder  $query
-     * @param  Model  $parent
-     * @param  string $foreignKey
-     * @param  string $localKey
+     * @param Builder $query
+     * @param Model   $parent
+     * @param string  $foreignKey
+     * @param string  $localKey
+     *
      * @return HasManySorted
      */
     protected function newHasManySorted(Builder $query, Model $parent, $foreignKey, $localKey)
