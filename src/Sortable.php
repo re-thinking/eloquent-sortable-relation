@@ -4,10 +4,6 @@ namespace Rethinking\Eloquent\Relations\Sortable;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * Interface Sortable
- * @package Rethinking\Eloquent\Relation\Sortable
- */
 interface Sortable
 {
     /**
