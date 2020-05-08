@@ -17,7 +17,7 @@ trait HasSortedRelations
     public function hasManySorted($related, $foreignKey = null, $localKey = null)
     {
         $instance = $this->newRelatedInstance($related);
-        if (!$instance instanceof Sortable) {
+        if (! $instance instanceof Sortable) {
             throw new \InvalidArgumentException("$related model should implement Sortable interface");
         }
 
