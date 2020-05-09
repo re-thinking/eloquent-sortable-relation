@@ -113,7 +113,7 @@ $owner->items()->save(new Item()); //newly created item will have position = 2
 
 $item = new Item();
 $item->owner()->associate($owner);
-$item->save();                     //newly create item will have position = 3
+$item->save();                     //newly created item will have position = 3
 ```
 
 When dissociate the related model from it owner, the position will be reset to `null`
