@@ -17,7 +17,7 @@ The package provides a relation class itself, traits for owner side and related 
 This package can be installed through composer
 
 ```bash
-composer install re-thinking/eloquent-sortable-relations 
+composer install rethinking/eloquent-sortable-relations 
 ```
 
 ## Usage
