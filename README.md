@@ -1,8 +1,10 @@
 # Eloquent sortable relations
 
+[![Latest Version](https://img.shields.io/github/release/rethinking/eloquent-sortable-relations.svg?style=flat-square)](https://github.com/rethinking/eloquent-sortable-relations/releases)
 ![run-tests](https://github.com/re-thinking/eloquent-sortable-relations/workflows/run-tests/badge.svg?branch=master)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![StyleCI](https://styleci.io/repos/261771207/shield?branch=master)](https://styleci.io/repos/261771207)
+[![Total Downloads](https://img.shields.io/packagist/dt/rethinking/eloquent-sortable-relations.svg?style=flat-square)](https://packagist.org/packages/rethinking/eloquent-sortable-relations)
 
 This package provides a new relation to Eloquent model
 
