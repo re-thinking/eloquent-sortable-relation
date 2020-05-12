@@ -126,6 +126,145 @@ $item->owner()->dissociate();
 assert($item->position === null); //true
 ```
 
+### Relations
+
+Extension provides 3 types of sorted relations:
+
+#### `HasManySorted`
+
+Items will be fetched based on position within `Owner::class`:
+```php
+//assume $owner has 3 related items with id 1,2,3 and positions of 3,1,2
+$owner = Owner::find(1);
+
+$items = $owner->items()->get(); // items will be sorted by position i.e. ids will be [$item2,$item1,$item3]
+```
+
+#### `HasManySortedThrough`
+Items will be fetched through `Middle::class` based on position of `Item::class` within `Middle::class`:
+```php
+//assume you have $owner -> $middle -> $item, where $item is sorted by $middle context
+
+use Illuminate\Database\Eloquent\Model;
+use Rethinking\Eloquent\Relations\Sortable\HasSortedRelations;
+use Rethinking\Eloquent\Relations\Sortable\HasSortingContext;use Rethinking\Eloquent\Relations\Sortable\Sortable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Owner extends Model
+{
+    use HasSortedRelations;
+
+    public function middles()
+    {
+        return $this->hasMany(Middle::class);
+    }
+       
+    public function items()
+    {
+        return $this->hasManySortedThrough(Item::class, Middle::class);
+    }
+}
+
+class Middle extends Model 
+{
+    use HasSortedRelations;
+    
+    public function items()
+    {
+        return $this->hasManySorted(Item::class);
+    }
+    
+    public function owner()
+    {
+        return $this->belongsTo(Owner::class);
+    }
+}
+
+class Item extends Model implements Sortable
+{
+    use HasSortingContext;
+
+    public function middle()
+    {
+        return $this->belongsTo(Middle::class);
+    }
+    
+    public function getSortingContext(): BelongsTo
+    {
+        return $this->middle();
+    }
+}
+
+//assume $owner has two $middle, each $middle has 3 $item
+//items inside every $middle has sorting of [1,2,3]
+$owner = Owner::find(1);
+
+//items will be mixed i.e. $middle1Item1, $middle2Item2, $middle1Item2, $middle2Item2 etc.
+$items = $owner->items()->get();
+```
+
+#### `HasManyThroughSorted`
+Items will be fetched through `Middle::class` based on position of `Middle::class` within `Owner::class`:
+```php
+//assume you have $owner -> $middle -> $item, where $middle is sorted by $owner context
+
+use Illuminate\Database\Eloquent\Model;
+use Rethinking\Eloquent\Relations\Sortable\HasSortedRelations;
+use Rethinking\Eloquent\Relations\Sortable\HasSortingContext;use Rethinking\Eloquent\Relations\Sortable\Sortable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Owner extends Model
+{
+    use HasSortedRelations;
+
+    public function middles()
+    {
+        return $this->hasMany(Middle::class);
+    }
+       
+    public function items()
+    {
+        return $this->hasManySortedThrough(Item::class, Middle::class);
+    }
+}
+
+class Middle extends Model implements Sortable
+{
+    use HasSortingContext;
+    
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(Owner::class);
+    }
+
+    public function getSortingContext() : BelongsTo
+    {
+        return $this->owner();
+    }
+}
+
+class Item extends Model
+{
+    public function middle()
+    {
+        return $this->belongsTo(Middle::class);
+    }
+}
+
+//assume $owner has two $middle, each $middle has 3 $item
+//$middle1 has position 2
+//$middle2 has position 1
+$owner = Owner::find(1);
+
+//items will be fetched from in order of $middle2 (position 1) and $middle1 (position 2)
+$items = $owner->items()->get();
+```
+
 ## Test
 
 The package contains integration tests, set up with Orchestra. Tests can be run through composer script
