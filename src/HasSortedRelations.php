@@ -150,8 +150,8 @@ trait HasSortedRelations
 
     private function checkClassIsSortable(string $class)
     {
-         if (!in_array(Sortable::class, class_implements($class))) {
-             throw new InvalidArgumentException("$class should implement Sortable interface");
-         }
+        if (! in_array(Sortable::class, class_implements($class))) {
+            throw new InvalidArgumentException("$class should implement Sortable interface");
+        }
     }
 }

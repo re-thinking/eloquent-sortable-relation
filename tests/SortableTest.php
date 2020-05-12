@@ -241,21 +241,21 @@ class SortableTest extends TestCase
         /** @var MiddleSortable $middle1 */
         $middle1 = MiddleSortable::create([
             'owner_id' => $owner->getKey(),
-            'position' => 2
+            'position' => 2,
         ]);
 
         /** @var MiddleSortable $middle2 */
         $middle2 = MiddleSortable::create([
             'owner_id' => $owner->getKey(),
-            'position' => 1
+            'position' => 1,
         ]);
 
         $items1 = $middle1->items()->createMany([
-            [], []
+            [], [],
         ])->pluck('id')->toArray();
 
         $items2 = $middle2->items()->createMany([
-            [], [], []
+            [], [], [],
         ])->pluck('id')->toArray();
 
         $items = $owner->items()->get();
