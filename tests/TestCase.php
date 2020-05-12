@@ -37,14 +37,36 @@ class TestCase extends Orchestra
             $table->increments('id');
         });
 
-        $this->app['db']->connection()->getSchemaBuilder()->create('default_items', function (Blueprint $table) {
+        $this->app['db']->connection()->getSchemaBuilder()->create('middle', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('owner_id');
+        });
+
+        $this->app['db']->connection()->getSchemaBuilder()->create('middle_sortable', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('owner_id');
+            $table->unsignedSmallInteger('position');
+        });
+
+        $this->app['db']->connection()->getSchemaBuilder()->create('items', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('middle_id');
+        });
+
+        $this->app['db']->connection()->getSchemaBuilder()->create('items_sortable', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('middle_id');
+            $table->unsignedSmallInteger('position');
+        });
+
+        $this->app['db']->connection()->getSchemaBuilder()->create('default_items_sortable', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('owner_id');
             $table->unsignedSmallInteger('position');
             $table->timestamps();
         });
 
-        $this->app['db']->connection()->getSchemaBuilder()->create('custom_items', function (Blueprint $table) {
+        $this->app['db']->connection()->getSchemaBuilder()->create('custom_items_sortable', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('owner_id');
             $table->unsignedSmallInteger('place');

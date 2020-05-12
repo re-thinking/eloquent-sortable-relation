@@ -11,7 +11,7 @@ class CustomSortableItem extends Model implements Sortable
 {
     use HasSortingContext;
 
-    protected $table = 'custom_items';
+    protected $table = 'custom_items_sortable';
 
     protected $guarded = [];
 

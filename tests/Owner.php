@@ -25,4 +25,24 @@ class Owner extends Model
     {
         return $this->hasManySorted(CustomSortableItem::class, 'owner_id');
     }
+
+    public function middles()
+    {
+        return $this->hasMany(Middle::class, 'owner_id');
+    }
+
+    public function sortableMiddles()
+    {
+        $this->hasManySorted(MiddleSortable::class, 'owner_id');
+    }
+
+    public function sortableItemsThroughMiddle()
+    {
+        return $this->hasManySortedThrough(SortableItem::class, Middle::class, 'owner_id', 'middle_id');
+    }
+
+    public function items()
+    {
+        return $this->hasManyThroughSorted(Item::class, MiddleSortable::class, 'owner_id', 'middle_id');
+    }
 }

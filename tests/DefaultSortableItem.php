@@ -11,7 +11,7 @@ class DefaultSortableItem extends Model implements Sortable
 {
     use HasSortingContext;
 
-    protected $table = 'default_items';
+    protected $table = 'default_items_sortable';
 
     protected $guarded = [];
 

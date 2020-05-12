@@ -166,7 +166,7 @@ class SortableTest extends TestCase
         $this->assertEquals(1, $item[$item->getPositionColumnName()]);
     }
 
-    public function testRelationsAreSortedWhenFetching()
+    public function testHasManyRelationIsSortedWhenFetching()
     {
         /** @var Owner $owner */
         $owner = Owner::create();
@@ -201,6 +201,67 @@ class SortableTest extends TestCase
 
         $this->assertEquals([2, 3, 1], $owner->defaultSortableItems->pluck('id')->toArray());
         $this->assertEquals([2, 1], $owner->customSortableItems->pluck('id')->toArray());
+    }
+
+    public function testHasManySortedThroughRelationIsSortedWhenFetching()
+    {
+        /** @var Owner $owner */
+        $owner = Owner::create();
+        /** @var Middle $middle1 */
+        $middle1 = $owner->middles()->create();
+        /** @var Middle $middle1 */
+        $middle2 = $owner->middles()->create();
+
+        SortableItem::create([
+            'middle_id' => $middle1->getKey(),
+            'position' => 1,
+        ]);
+
+        SortableItem::create([
+            'middle_id' => $middle1->getKey(),
+            'position' => 2,
+        ]);
+
+        SortableItem::create([
+            'middle_id' => $middle2->getKey(),
+            'position' => 1,
+        ]);
+
+        $items = $owner->sortableItemsThroughMiddle()->get();
+
+        $this->assertCount(3, $items);
+        $this->assertEquals([1, 3, 2], $items->pluck('id')->toArray());
+    }
+
+    public function testHasManyThroughSortedRelationIsSortedWhenFetching()
+    {
+        /** @var Owner $owner */
+        $owner = Owner::create();
+
+        /** @var MiddleSortable $middle1 */
+        $middle1 = MiddleSortable::create([
+            'owner_id' => $owner->getKey(),
+            'position' => 2
+        ]);
+
+        /** @var MiddleSortable $middle2 */
+        $middle2 = MiddleSortable::create([
+            'owner_id' => $owner->getKey(),
+            'position' => 1
+        ]);
+
+        $items1 = $middle1->items()->createMany([
+            [], []
+        ])->pluck('id')->toArray();
+
+        $items2 = $middle2->items()->createMany([
+            [], [], []
+        ])->pluck('id')->toArray();
+
+        $items = $owner->items()->get();
+
+        $this->assertCount(5, $items);
+        $this->assertEquals(array_merge([], $items2, $items1), $items->pluck('id')->toArray());
     }
 
     public function testRelationsResort()
